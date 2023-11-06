@@ -9,15 +9,36 @@ function getForecast(lat, lon)
     {
         return response.json();
     })
-    .then(data =>
+    .then(res =>
     {
-        console.log(data);
+        forecast.innerHTML = "";
+
+        for(var i = 0; i < 5; i++) {
+            var dateEl = document.createElement("h2");
+            var imgEl = document.createElement("img");
+            var temperatureEl = document.createElement("p");
+            var windEl= document.createElement("p");
+            var humidityEl = document.createElement("p");
+
+            var date = new Date(res.daily[i].dt * 1000).toLocaleString().split(",")[0];
+
+            dateEl.textContent = date;
+            imgEl.setAttribute("src", `https://openweathermap.org/img/wn/${res.daily[i].weather[0].icon}@2x.png`);
+            temperatureEl.textContent = `Temp: ${res.daily[i].temp.day} °F`
+            windEl.textContent = `Wind Speed: ${res.daily[i].wind_speed} MPH`;
+            humidityEl.textContent = `Humidity: ${res.daily[i].humidity}`
+
+            var day = document.createElement("div");
+            day.setAttribute("style", "padding: 20px");
+            day.append(dateEl, imgEl, temperatureEl, windEl, humidityEl);
+
+            forecast.append(day);
+        }
     })
 }
 
-
-function getCoords(inputTxt) {
-    var coordsUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${inputTxt}&limit=5&appid=6d3d04001d76e5ac03fafd3c5691957f`;
+function getCoords() {
+    var coordsUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${input.value}&limit=5&appid=6d3d04001d76e5ac03fafd3c5691957f`;
 
     fetch(coordsUrl).then(function (response) {
         return response.json();
@@ -27,8 +48,4 @@ function getCoords(inputTxt) {
     });
 }
 
-function search() {
-    getCoords(input.value)
-}
-
-searchBtn.addEventListener("click", search);
+searchBtn.addEventListener("click", getCoords);
