@@ -38,7 +38,7 @@ function getForecast(lat, lon)
 }
 
 function getCoords() {
-    var coordsUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${input.value}&limit=5&appid=6d3d04001d76e5ac03fafd3c5691957f`;
+    var coordsUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${input.value}&limit=5&appid=6d3d04001d76e5ac03fafd3c5691957f`;
 
     fetch(coordsUrl).then(function (response) {
         return response.json();
